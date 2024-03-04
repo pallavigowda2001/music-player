@@ -1,0 +1,16 @@
+Rules related to Readme.md file
+
+#-> h1 tag
+##->h2 tag
+## -> h3 tag
+
+** note ** ->important note
+`commands`->commands
+
+paragraph content
+
+    blockquote content
+
+  [title](https://link.com)  ->a tag
+
+  \ ->line break
