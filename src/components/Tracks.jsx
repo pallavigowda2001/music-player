@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import config from "../token/config";
 function Tracks(){
     const [music,setMusic] = useState([])
+    const [view,setView] = useState(false) //handle player view
+
+    const [track,setTrack] = useState(false) //single track
     //to read router params data -> useParams()
     const params =useParams()
 
@@ -23,8 +26,20 @@ function Tracks(){
         searchHandler()
     },[])
 
-    return(
-        <div className="container mt-5">
+    //track card click handler
+    const trackClick = (data) =>{
+        setView(true)
+        setTrack(data)
+    }
+
+    //close the player
+    const close = () => {
+        setView(false)
+        setTrack(false)
+    }
+
+    return(                                                                                                                                                                       
+        <div className="container mt-5" id="track">
             <div className="row">
                 <div className="col-md-12 text-center">
                     <h3 className="display-4 text-success">Music tracks</h3>
@@ -38,8 +53,8 @@ function Tracks(){
                         const {name,album,preview_url} =item
                         return(
                             <div className="col-lg-3 col-md-4 col-sm-6 mt-2 mb-2" key={index}>
-                                <div className="card music-card">
-                                    <img src={album ? album.images[0].url :''} alt="" className="card-img-top" />
+                                <div className="card music-card" onClick={()=> trackClick(item)}>
+                                    <img src={album? album.images[0].url :''} alt="" className="card-img-top" />
                                     <div className="card-hover">
                                         <h6 className="text-success text-center">{name}</h6>
                                     </div>
@@ -49,6 +64,31 @@ function Tracks(){
                     })
                 }
             </div>
+                   {
+                    view ? <div id="player" className="justify-content-center align-items-center p-3">
+                               <div className="container">
+                                   <div className="row">
+                                       <div className="col-md-12">
+                                              <button className="btn btn-close  text-danger float-end" onClick={() => close()}></button>
+                                       </div>
+                                    </div>
+                                    <div className="row">
+                                      <div className="col-md-4">
+                                          <div className="img">
+                                             <img src={track?.album.images[0].url} alt="" className='img-fluid rounded-circle'
+                                             width={150} height={150} />
+                                          </div>
+                                       </div>
+                                        <div className="col-md-6">
+                                            <h5 className="text-center text-warning">{ track?.name}</h5>
+                                            <audio src={track?.preview_url} controls></audio>
+                                        </div>
+                                   </div>
+                                </div>
+                    
+                           </div> : null
+                
+                   }
         </div>
     )
 }
